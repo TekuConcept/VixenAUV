@@ -1,29 +1,20 @@
-# Compiled Object files
-*.slo
-*.lo
+###Git Ignore Filetypes###
+
+#compiled source#
+#################
 *.o
-*.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
 *.so
-*.dylib
-*.dll
 
-# Fortran module files
-*.mod
-*.smod
+Release/
+Debug/
+Build/
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
+#cmake-generated files#
+.cmake
+CMakeCache.txt
 
-# Executables
-*.exe
-*.out
-*.app
+# NPM
+node_modules/
+
+# Submodules
+Drivers/
