@@ -20,9 +20,9 @@ make; make install
 
 ### Supported Hardware
 
-> BeagleBone Black - Debian 8.4 Jessie
-> Arduino Due - IDE v1.6.7, SAM Cortex-M3 v1.6.7
-> IMU - (BMP085, MPU6050, HMC5883L)
+> - BeagleBone Black - Debian 8.4 Jessie
+> - Arduino Due - IDE v1.6.7, SAM Cortex-M3 v1.6.7
+> - IMU - (BMP085, MPU6050, HMC5883L)
 
 ### Getting Started
 First start by compiling the code: `cd VixenAUV/Scripts; ./compile.sh` - you may need to change permissions. If everything compiled successfully, a new node module should have been created in `VixenAUV/BoneCentral/Peripherals/build/Release` called **VixenAUV.node**. This is the heart of the code providing hardware access to the JavaScript brain.
