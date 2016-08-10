@@ -15,7 +15,7 @@ cd swig
 ./configure --prefix=/usr --without-clisp --without-maximum-compile-warnings
 make; make install
 ```
-> - 'jquery-deferred' for promise-based scripting: `npm install -g jquery-deferred`
+> - (optional) 'jquery-deferred' or 'Bluebird' for promise-based scripting: `npm install -g jquery-deferred`
 > - *It is recommended, though not required, to disable HDMI and eMMC on the bone, and to boot from an SD card for more pins and disk space.*
 
 ### Supported Hardware
@@ -38,7 +38,6 @@ The blue wire is the interrupt wire (where the kill switch plugs into) and the w
 // this path will vary according to the executing location
 var libpath = './Peripherals/build/Release';
 var VixenAUV = require(libpath + '/VixenAUV');
-var $ = require('jquery-deferred');
 
 // Connect to the Arduino
 var factory = new VixenAUV.ArduinoFactory();
@@ -46,10 +45,11 @@ var grid = factory.getPowerGrid();
 var engine = factory.getEngine();
 
 // Wait for the signal and go!
-var wait = $.Deferred();
+var deferred_resolve = null;
+var wait = new Promise(function(resolve, reject) { deferred_resolve = resolve; });
 function callback(msg) {
 	console.log(msg);
-	wait.resolve();
+	deferred_resolve();
 }
 grid.waitForStartSignal(callback);
 wait.then(function() {
