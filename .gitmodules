@@ -1,6 +1,3 @@
 [submodule "Drivers"]
 	path = Libraries/Drivers
 	url = https://github.com/USU-Robosub/Drivers.git
-[submodule "googletest"]
-	path = Libraries/googletest
-	url = https://github.com/google/googletest.git
