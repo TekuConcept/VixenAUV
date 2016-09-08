@@ -1,6 +1,6 @@
 var path = "./../Peripherals/build/Release"
-var BoneCentral = require(path + "/BoneCentral");
-var factory = new BoneCentral.ArduinoFactory();
+var VixenAUV = require(path + "/VixenAUV");
+var factory = new VixenAUV.ArduinoFactory();
 var engine = factory.getEngine();
 
 console.log("- BEGIN TEST -");
