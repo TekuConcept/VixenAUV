@@ -86,6 +86,7 @@ int main() {
 
 	std::cout << arduino.readString() << std::endl;
 	std::cout << "- BEGIN TEST -" << std::endl;
+	arduino.writeByte(1);
 
 	// test successful thruster initialization
 	readThrusters(&arduino);
