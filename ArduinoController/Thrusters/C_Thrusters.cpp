@@ -9,7 +9,7 @@
 float    hw_modifiers_[MOD_COUNT];
 float    hw_trim_[THRUST_COUNT];
 uint16_t hw_thrust_mem_[THRUST_COUNT];
-//Servo  hw_servos_[THRUST_COUNT];
+Servo    hw_servos_[THRUST_COUNT];
 
 void update_pair(uint8_t,uint8_t,uint8_t,uint8_t);
 
@@ -17,12 +17,12 @@ void HW_configure(
 	int aPairFirst, int aPairSecond,
 	int bPairFirst, int bPairSecond,
 	int cPairFirst, int cPairSecond) {
-	//hw_servos_[HW_A_FIRST ].attach(aPairFirst );
-	//hw_servos_[HW_A_SECOND].attach(aPairSecond);
-	//hw_servos_[HW_B_FIRST ].attach(bPairFirst );
-	//hw_servos_[HW_B_SECOND].attach(bPairSecond);
-	//hw_servos_[HW_C_FIRST ].attach(cPairFirst );
-	//hw_servos_[HW_C_SECOND].attach(cPairSecond);
+	hw_servos_[HW_A_FIRST ].attach(aPairFirst );
+	hw_servos_[HW_A_SECOND].attach(aPairSecond);
+	hw_servos_[HW_B_FIRST ].attach(bPairFirst );
+	hw_servos_[HW_B_SECOND].attach(bPairSecond);
+	hw_servos_[HW_C_FIRST ].attach(cPairFirst );
+	hw_servos_[HW_C_SECOND].attach(cPairSecond);
 	HW_hard_reset();
 }
 
@@ -86,7 +86,7 @@ void HW_soft_reset() {
 		hw_modifiers_[i] = 0;
 	}
 	for(int i = 0; i < THRUST_COUNT; i++) {
-		//hw_servos_[i].writeMicroseconds(HW_IDLE);
+		hw_servos_[i].writeMicroseconds(HW_IDLE);
 		hw_thrust_mem_[i] = HW_IDLE;
 	}
 }
@@ -140,7 +140,7 @@ void update_pair(uint8_t hw_left, uint8_t hw_right,
 void HW_set_thruster(uint8_t index, uint16_t value) {
 	if(index >= THRUST_COUNT)
 		return;
-	//hw_servos_[index].writeMicroseconds(value);
+	hw_servos_[index].writeMicroseconds(value);
 	hw_thrust_mem_[index] = value;
 }
 
