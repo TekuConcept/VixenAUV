@@ -5,7 +5,11 @@
         "sources": [
             "swig_VixenAUV_wrap.cxx",
             "Peripherals.Arduino/Serial.cpp",
-            "Peripherals.Arduino/PowerInterface.cpp"
+            "Peripherals.Arduino/PowerInterface.cpp",
+            "../../Libraries/Drivers/Src/System/I2C.cpp",
+            "../../Libraries/Drivers/Src/Sensors/BMP085.cpp",
+            "../../Libraries/Drivers/Src/Sensors/HMC5883L.cpp",
+            "../../Libraries/Drivers/Src/Sensors/MPU6050.cpp",
         ],
         "include_dirs": [
             "Peripherals.Arduino",
@@ -17,10 +21,7 @@
         ],
         "cflags": [
             "-std=c++11",
-            "-w",
-            # "libraries" places this lib file in an awkward spot such that it
-            # cannot be found, so we'll just explicitely add them here.
-            "-L../../Libraries/Drivers/Build", "-lDrivers"
+            "-w"
         ],
         "defines": [
             "NODE_MAJOR=<!(node -e \"console.log(process.versions.node.split('.')[0])\")",
