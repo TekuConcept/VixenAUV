@@ -8,6 +8,7 @@
 // #include <Servo.h>
 
 #include "Arduino.h"
+#include "Servo.h"
 
 #define HW_MOD_LIN1  0
 #define HW_MOD_ANG1  1
