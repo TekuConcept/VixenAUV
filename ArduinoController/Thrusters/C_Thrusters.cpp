@@ -6,10 +6,15 @@
 	
 #define MOD_COUNT 6u // thruster modifiers
 #define THRUST_COUNT 6u
-float    hw_modifiers_[MOD_COUNT];
-float    hw_trim_[THRUST_COUNT];
-uint16_t hw_thrust_mem_[THRUST_COUNT];
-Servo    hw_servos_[THRUST_COUNT];
+
+typedef struct hw_thruster {
+	Servo servo;
+	uint16_t value;
+	float trim;
+} hw_thruster;
+
+float       hw_modifiers_[MOD_COUNT];
+hw_thruster hw_thrusters_[THRUST_COUNT];
 
 void update_pair(uint8_t,uint8_t,uint8_t,uint8_t);
 
@@ -17,12 +22,13 @@ void HW_configure(
 	int aPairFirst, int aPairSecond,
 	int bPairFirst, int bPairSecond,
 	int cPairFirst, int cPairSecond) {
-	hw_servos_[HW_A_FIRST ].attach(aPairFirst );
-	hw_servos_[HW_A_SECOND].attach(aPairSecond);
-	hw_servos_[HW_B_FIRST ].attach(bPairFirst );
-	hw_servos_[HW_B_SECOND].attach(bPairSecond);
-	hw_servos_[HW_C_FIRST ].attach(cPairFirst );
-	hw_servos_[HW_C_SECOND].attach(cPairSecond);
+
+	hw_thrusters_[HW_A_FIRST ].servo.attach(aPairFirst);
+	hw_thrusters_[HW_A_SECOND].servo.attach(aPairSecond);
+	hw_thrusters_[HW_B_FIRST ].servo.attach(bPairFirst );
+	hw_thrusters_[HW_B_SECOND].servo.attach(bPairSecond);
+	hw_thrusters_[HW_C_FIRST ].servo.attach(cPairFirst );
+	hw_thrusters_[HW_C_SECOND].servo.attach(cPairSecond);
 	HW_hard_reset();
 }
 
@@ -82,20 +88,24 @@ void HW_reset_modifiers() {
 \* - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 void HW_soft_reset() {
+	DMSG("HW Soft Reset")
 	for(int i = 0; i < MOD_COUNT; i++) {
 		hw_modifiers_[i] = 0;
 	}
 	for(int i = 0; i < THRUST_COUNT; i++) {
-		hw_servos_[i].writeMicroseconds(HW_IDLE);
-		hw_thrust_mem_[i] = HW_IDLE;
+		hw_thrusters_[i].servo.writeMicroseconds(HW_IDLE);
+		hw_thrusters_[i].value = HW_IDLE;
 	}
 }
 
 void HW_hard_reset() {
-	HW_soft_reset();
+	DMSG("HW Hard Reset")
 	for(int i = 0; i < THRUST_COUNT; i++) {
-		hw_trim_[i] = 1;
+		hw_thrusters_[i].servo.writeMicroseconds(HW_IDLE);
+		hw_thrusters_[i].value = HW_IDLE;
+		hw_thrusters_[i].trim = 1;
 	}
+	DMSG(hw_thrusters_[0].value);
 }
 
 void set_safe_ratio(float* a, float* b) {
@@ -122,32 +132,32 @@ void update_pair(uint8_t hw_left, uint8_t hw_right,
 	float left = 0, right = 0, temp = 0;
 
 	// blend move and yaw
-	left = hw_modifiers_[linear_mod];
-	right = left;
-	temp = hw_modifiers_[angular_mod];
-	left += temp;
+	left   = hw_modifiers_[linear_mod];
+	right  = left;
+	temp   = hw_modifiers_[angular_mod];
+	left  += temp;
 	right -= temp;
 
 	// set safe ranges as a ratio of the current values
 	set_safe_ratio(&left, &right);
 
 	HW_set_thruster(hw_left,
-		(uint16_t)(HW_IDLE + left *hw_trim_[hw_left ]*HW_DIFF));
+		(uint16_t)(HW_IDLE + left *hw_thrusters_[hw_left ].trim*HW_DIFF));
 	HW_set_thruster(hw_right,
-		(uint16_t)(HW_IDLE + right*hw_trim_[hw_right]*HW_DIFF));
+		(uint16_t)(HW_IDLE + right*hw_thrusters_[hw_right].trim*HW_DIFF));
 }
 
 void HW_set_thruster(uint8_t index, uint16_t value) {
 	if(index >= THRUST_COUNT)
 		return;
-	hw_servos_[index].writeMicroseconds(value);
-	hw_thrust_mem_[index] = value;
+	hw_thrusters_[index].servo.writeMicroseconds(value);
+	hw_thrusters_[index].value = value;
 }
 
 uint16_t HW_get_thruster(uint8_t index) {
 	if(index >= THRUST_COUNT)
 		return 0;
-	return hw_thrust_mem_[index];
+	return hw_thrusters_[index].value;
 }
 
 void HW_set_trim(uint8_t index, float value) {
@@ -158,7 +168,7 @@ void HW_set_trim(uint8_t index, float value) {
 	else if(value < -1)
 		value = -1;
 
-	hw_trim_[index] = value;
+	hw_thrusters_[index].trim = value;
 	switch(index) {
 	case HW_A_FIRST:
 	case HW_A_SECOND:
@@ -178,12 +188,12 @@ void HW_set_trim(uint8_t index, float value) {
 float HW_get_trim(uint8_t index) {
 	if(index >= THRUST_COUNT)
 		return -2;
-	return hw_trim_[index];
+	return hw_thrusters_[index].trim;
 }
 
 void HW_reset_trim() {
 	for(int i = 0; i < THRUST_COUNT; i++) {
-		hw_trim_[i] = 1;
+		hw_thrusters_[i].trim = 1;
 	}
 	update_pair(HW_A_FIRST, HW_A_SECOND, HW_MOD_LIN1, HW_MOD_ANG1);
 	update_pair(HW_B_FIRST, HW_B_SECOND, HW_MOD_LIN2, HW_MOD_ANG2);
