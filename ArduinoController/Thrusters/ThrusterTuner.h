@@ -26,8 +26,11 @@ public:
 		while(Serial.available() < 1);
 		uint8_t rdwr = Serial.read();
 		if(rdwr == HW_RD) {
-			// Serial.println(HW_get_trim(index));
+			#ifdef DEBUG
+			Serial.println(HW_get_trim(index));
+			#else
 			SerialEx::writeFloat(HW_get_trim(index));
+			#endif
 		}
 		else {
 			while(Serial.available() < 4);

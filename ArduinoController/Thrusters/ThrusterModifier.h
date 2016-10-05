@@ -31,8 +31,11 @@ public:
 		uint8_t rdwr  = Serial.read();
 		if(rdwr == HW_RD) {
 			// Read current modifier value.
-			// Serial.println(HW_get_modifier(index));
+			#ifdef DEBUG
+			Serial.println(HW_get_modifier(index));
+			#else
 			SerialEx::writeFloat(HW_get_modifier(index));
+			#endif
 		}
 		else{
 			while(Serial.available() < 4);

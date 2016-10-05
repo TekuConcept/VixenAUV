@@ -30,8 +30,11 @@ public:
     while(Serial.available() < 1);
     uint8_t rdwr = Serial.read();
     if(rdwr == HW_RD) {
-      // Serial.println(HW_get_thruster(index));
+      #ifdef DEBUG
+      Serial.println(HW_get_thruster(index));
+      #else
       SerialEx::writeUShort(HW_get_thruster(index));
+      #endif
     }
     else {
       while(Serial.available() < 2);

@@ -6,12 +6,12 @@
 #define PIN_MAP
 
 // thruster pins
-#define LEFT_FORWARD  12
-#define RIGHT_FORWARD 11
-#define LEFT_STRAFE    9
-#define RIGHT_STRAFE   8
-#define FRONT_DIVE     7
-#define BACK_DIVE      6
+#define LEFT_FORWARD  13
+#define RIGHT_FORWARD 12
+#define LEFT_STRAFE   11
+#define RIGHT_STRAFE  10
+#define FRONT_DIVE     9
+#define BACK_DIVE      8
 
 // esc pins
 #define ESC1 36
