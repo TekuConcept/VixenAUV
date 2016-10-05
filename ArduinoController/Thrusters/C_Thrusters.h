@@ -5,11 +5,15 @@
 #ifndef C_THRUSTERS_H
 #define C_THRUSTERS_H
 
-// #include <Servo.h>
+#include <Arduino.h>
+#include <Servo.h>
 
-
-#include "Arduino.h"
-#include "Servo.h"
+//#define DEBUG
+#ifdef DEBUG
+	#define DMSG(msg) Serial.println(msg);
+#else
+	#define DMSG(msg) (void)(msg);
+#endif
 
 #define HW_MOD_LIN1  0
 #define HW_MOD_ANG1  1
