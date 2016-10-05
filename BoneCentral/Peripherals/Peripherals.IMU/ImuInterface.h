@@ -75,8 +75,8 @@ public:
         float x = c_sense.X();
         float y = c_sense.Y();
         float z = c_sense.Z();
-        ss << "{\"Compass\": {\"X\":\"" << x << "\",\"Y\":\"";
-        ss << y << "\",\"Z\":\"" << z << "\"}}";
+        ss << "{\"Compass\": {\"X\":" << x << ",\"Y\":";
+        ss << y << ",\"Z\":" << z << "}}";
         return ss.str();
     }
     
@@ -85,8 +85,8 @@ public:
         float x = m_sense.accel_X();
         float y = m_sense.accel_Y();
         float z = m_sense.accel_Z();
-        ss << "{\"Accelerometer\": {\"X\":\"" << x << "\",\"Y\":\"";
-        ss << y << "\",\"Z\":\"" << z << "\"}}";
+        ss << "{\"Accelerometer\": {\"X\":" << x << ",\"Y\":";
+        ss << y << ",\"Z\":" << z << "}}";
         return ss.str();
     }
     
@@ -95,8 +95,8 @@ public:
         float x = m_sense.gyro_X();
         float y = m_sense.gyro_Y();
         float z = m_sense.gyro_Z();
-        ss << "{\"Gyroscope\": {\"X\":\"" << x << "\",\"Y\":\"";
-        ss << y << "\",\"Z\":\"" << z << "\"}}";
+        ss << "{\"Gyroscope\": {\"X\":" << x << ",\"Y\":";
+        ss << y << ",\"Z\":" << z << "}}";
         return ss.str();
     }
     
@@ -104,15 +104,15 @@ public:
         std::stringstream ss;
         float a = m_sense.temperature();
         float b = e_sense.readTemperature();
-        ss << "{\"Temperature\": {\"MPU6050\":\"" << a;
-        ss << "\",\"BMP085\":\"" << b << "\"}}";
+        ss << "{\"Temperature\": {\"MPU6050\":" << a;
+        ss << ",\"BMP085\":" << b << "}}";
         return ss.str();
     }
     
     std::string pressure() {
         std::stringstream ss;
         float p = e_sense.readAltitude();
-        ss << "{\"Pressure\": {\"BMP085\":\"" << p << "\"}}";
+        ss << "{\"Pressure\": {\"BMP085\":" << p << "}}";
         return ss.str();
     }
 
