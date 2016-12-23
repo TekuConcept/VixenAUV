@@ -5,8 +5,10 @@
 
 #if defined(__AVR_ATmega328P__)
 #define UNO
+#define GARBAGE 240
 #elif defined(__AVR_ATSAM3X8E__)
 #define DUE
+#define GARBAGE 0
 #endif
 
 #include "Accessories/LedController.h"
@@ -62,11 +64,7 @@ void setup() {
 void clearBuffer() {
   while(true) {
     if(Serial.available()) {
-#ifdef UNO
-      if(Serial.read() != 240)
-#else
-      if(Serial.read() != 0)
-#endif
+      if(Serial.read() != GARBAGE)
         break;
     }
   }
