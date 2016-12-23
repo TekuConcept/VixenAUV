@@ -1,19 +1,19 @@
 //
-// Created by Nathan Copier on 1/28/2016.
-// Refactored by TekuConcept on 8/3/2016.
+// Created by TekuConcept on 12/22/2016.
 //
-
 #include "Serial.h"
 
 std::mutex Serial::serialLock_;
 
-Serial::Serial() {
-    std::system("stty -F /dev/ttyACM0 cs8 115200 ignbrk \
+Serial::Serial(std::string device, int baud) {
+    std::stringstream ss;
+    ss<<"stty -F "<<divice<<" cs8 "<<baud<<" ignbrk \
         -brkint -icrnl -imaxbel -opost -onlcr -isig -icanon \
         -iexten -echo -echoe -echok -echoctl -echoke noflsh \
-        -ixon -crtscts");
-    input_ = std::make_shared<std::ifstream>("/dev/ttyACM0");
-    output_ = std::make_shared<std::ofstream>("/dev/ttyACM0");
+        -ixon -crtscts";
+    std::system(ss.str());
+    input_ = std::make_shared<std::ifstream>(device);
+    output_ = std::make_shared<std::ofstream>(device);
 }
 
 Serial::~Serial() {

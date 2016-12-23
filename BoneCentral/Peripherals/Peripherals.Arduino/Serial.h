@@ -25,7 +25,7 @@ private:
     static std::mutex serialLock_;
     
 public:
-    Serial();
+    Serial(std::string device, int baud);
     ~Serial();
     
     std::string     readString();

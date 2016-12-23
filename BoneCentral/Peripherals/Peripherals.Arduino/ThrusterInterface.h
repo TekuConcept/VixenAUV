@@ -27,26 +27,6 @@ public:
 		}
 	}
 
-	void move2(float value) {
-		if(arduino) {
-			if(verbose_) std::cout << "moving2: " << value;
-			const char* data = "\x01\x04\x01";
-			arduino->writeData((char*)data, 3);
-			arduino->writeFloat(value);
-			if(verbose_) std::cout << " ...Finished!" << std::endl;
-		}
-	}
-
-	void dive(float value) {
-		if(arduino) {
-			if(verbose_) std::cout << "diving: " << value;
-			const char* data = "\x01\x02\x01";
-			arduino->writeData((char*)data, 3);
-			arduino->writeFloat(value);
-			if(verbose_) std::cout << " ...Finished!" << std::endl;
-		}
-	}
-
 	void yaw(float value) {
 		if(arduino) {
 			if(verbose_) std::cout << "yawing: " << value;
