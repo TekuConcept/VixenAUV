@@ -53,21 +53,13 @@ void setup() {
     [](){((KillSwitchController*)controllers[KILL_ADDR])->isr();},
     CHANGE
   );
-  clearBuffer();
-}
-
-// At baud rates around 115200, RX buffer gets filled with
-// garbage in the beginning. To fix this, we just clear it
-// before proceeding. Luckilly the guarbage is consistant!
-// The host will give an ACKNO to begin thus exiting  this
-// infinite loop.
-void clearBuffer() {
-  while(true) {
-    if(Serial.available()) {
-      if(Serial.read() != GARBAGE)
-        break;
-    }
-  }
+  
+  // At baud rates around 115200, RX buffer gets filled with
+  // garbage in the beginning. To fix this, we just clear it
+  // before proceeding. Luckilly the guarbage is consistant!
+  // The host will give an ACKNO to begin thus exiting  this
+  // infinite loop.
+  while((!Serial.available())||(Serial.read()==GARBAGE));
 }
 
 void loop() {
