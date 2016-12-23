@@ -5,6 +5,11 @@
 #ifndef ARDUNIO_MAP_H
 #define ARDUNIO_MAP_H
 
-#define THRUSTER          0
+#define BAUD            115200
+#define ACKNO           1
+
+#define KILL            0
+#define PING_CONTROL    1
+#define MOTOR_DRIVER    2
 
 #endif

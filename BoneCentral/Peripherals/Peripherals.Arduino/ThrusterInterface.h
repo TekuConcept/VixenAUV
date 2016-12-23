@@ -8,6 +8,9 @@
 #include "Serial.h"
 #include <iostream>
 
+#define MSG(x) if(verbose_) std::cout << x
+#define MSGN(x) if(verbose_) std::cout << x << std::endl
+
 class Drive {
 public:
 	Drive() {
@@ -18,100 +21,29 @@ public:
 	}
 
 	void move(float value) {
-		if(arduino) {
-			if(verbose_) std::cout << "moving: " << value;
-			const char* data = "\x01\x00\x01";
-			arduino->writeData((char*)data, 3);
-			arduino->writeFloat(value);
-			if(verbose_) std::cout << " ...Finished!" << std::endl;
-		}
+		_move = value;
+		MSG("moving: " << value);
+		_setMotor(_move, _rotate);
 	}
 
 	void yaw(float value) {
-		if(arduino) {
-			if(verbose_) std::cout << "yawing: " << value;
-			const char* data = "\x01\x01\x01";
-			arduino->writeData((char*)data, 3);
-			arduino->writeFloat(value);
-			if(verbose_) std::cout << " ...Finished!" << std::endl;
-		}
-	}
-
-	void yaw2(float value) {
-		if(arduino) {
-			if(verbose_) std::cout << "yawing2: " << value;
-			const char* data = "\x01\x05\x01";
-			arduino->writeData((char*)data, 3);
-			arduino->writeFloat(value);
-			if(verbose_) std::cout << " ...Finished!" << std::endl;
-		}
-	}
-
-	void pitch(float value) {
-		if(arduino) {
-			if(verbose_) std::cout << "pitching: " << value;
-			const char* data = "\x01\x03\x01";
-			arduino->writeData((char*)data, 3);
-			arduino->writeFloat(value);
-			if(verbose_) std::cout << " ...Finished!" << std::endl;
-		}
-	}
-
-	void setForwardTrim(float left, float right) {
-		if(arduino) {
-			if(verbose_) std::cout << "setting forward trim: " << left << ":" << right;
-			const char* data = "\x02\x00\x01";
-			arduino->writeData((char*)data, 3);
-			arduino->writeFloat(left);
-			data = "\x02\x01\x01";
-			arduino->writeData((char*)data, 3);
-			arduino->writeFloat(right);
-			if(verbose_) std::cout << " ...Finished!" << std::endl;
-		}
-	}
-
-	void setDiveTrim(float front, float back) {
-		if(arduino) {
-			if(verbose_) std::cout << "setting forward trim: " << front << ":" << back;
-			const char* data = "\x02\x02\x01";
-			arduino->writeData((char*)data, 3);
-			arduino->writeFloat(front);
-			data = "\x02\x03\x01";
-			arduino->writeData((char*)data, 3);
-			arduino->writeFloat(back);
-			if(verbose_) std::cout << " ...Finished!" << std::endl;
-		}
-	}
-
-	void setStrafeTrim(float left, float right) {
-		if(arduino) {
-			if(verbose_) std::cout << "setting strafe trim: " << left << ":" << right;
-			const char* data = "\x02\x04\x01";
-			arduino->writeData((char*)data, 3);
-			arduino->writeFloat(left);
-			data = "\x02\x05\x01";
-			arduino->writeData((char*)data, 3);
-			arduino->writeFloat(right);
-			if(verbose_) std::cout << " ...Finished!" << std::endl;
-		}
+		_rotate = value;
+		MSG("yawing: ");
+		_setMotor(_move, _rotate);
 	}
 
 	void kill() {
 		if(arduino) {
-			if(verbose_) std::cout << "killing... ";
-			const char* data = "\x00\x06";
-			arduino->writeData((char*)data, 2);
-			if(verbose_) std::cout << "Finished!" << std::endl;
+			MSG("killing... ");
+			const char* data = "\x00";
+			arduino->writeData((char*)data, 1);
+			MSGN("Finished!");
 		}
 	}
 
 	void debug() {
-		if(arduino) {
-			std::cout << "debug info..." << std::endl;
-			readThrusters();
-			readModifiers();
-			readTrim();
-		}
+		MSGN("debug info...");
+		readThrusters();
 	}
 	
 	void verbose(bool flag) {
@@ -122,37 +54,32 @@ public:
 	Drive(Serial* in) {
 		arduino = in;
 		verbose_ = false;
+		_move = 0.0f;
+		_rotate = 0.0f;
 	}
 #endif
 
 private:
+	float _move,_rotate;
 	Serial *arduino;
 	bool verbose_;
 
 	void readThrusters() {
-		for(int i = 0; i < 6; i++) {
-			arduino->writeByte(0); // controller
-			arduino->writeByte(i); // thruster
-			arduino->writeByte(0); // access mode
-			std::cout << "Thruster " << i << ": " << arduino->readShort() << std::endl;
+		if(arduino) {
+			const char* data = "\x02\x00";
+			arduino->writeData((char*)data, 2);
+			MSGN("Left  Motor: " << arduino->readFloat());
+			MSGN("Right Motor: " << arduino->readFloat());
 		}
 	}
-
-	void readModifiers() {
-		for(int i = 0; i < 6; i++) {
-			arduino->writeByte(1); // controller
-			arduino->writeByte(i); // modifier
-			arduino->writeByte(0); // access mode
-			std::cout << "Modifier " << i << ": " << arduino->readFloat() << std::endl;
-		}
-	}
-
-	void readTrim() {
-		for(int i = 0; i < 6; i++) {
-			arduino->writeByte(2); // controller
-			arduino->writeByte(i); // trim index
-			arduino->writeByte(0); // access mode
-			std::cout << "Trim " << i << ": " << arduino->readFloat() << std::endl;
+	
+	void _setMotor(float move, float rotate) {
+		if(arduino) {
+			const char* data = "\x02\x01";
+			arduino->writeData((char*)data, 2);
+			arduino->writeFloat(_move);
+			arduino->writeFloat(_rotate);
+			MSGN(" ...Finished!");
 		}
 	}
 };

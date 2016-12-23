@@ -1,3 +1,6 @@
 [submodule "Drivers"]
 	path = Libraries/Drivers
 	url = https://github.com/USU-Robosub/Drivers.git
+[submodule "Libraries/Drivers"]
+	path = Libraries/Drivers
+	url = https://github.com/USU-Robosub/Drivers

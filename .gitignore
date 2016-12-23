@@ -9,6 +9,9 @@ Release/
 Debug/
 Build/
 
+.travis.yml
+swig_VixenAUV_wrap.cxx
+
 #cmake-generated files#
 .cmake
 CMakeCache.txt
@@ -17,6 +20,5 @@ CMakeCache.txt
 node_modules/
 
 # Submodules
-Drivers/
 .pioenvs
 .piolibdeps

@@ -7,11 +7,11 @@ std::mutex Serial::serialLock_;
 
 Serial::Serial(std::string device, int baud) {
     std::stringstream ss;
-    ss<<"stty -F "<<divice<<" cs8 "<<baud<<" ignbrk \
+    ss<<"stty -F "<<device<<" cs8 "<<baud<<" ignbrk \
         -brkint -icrnl -imaxbel -opost -onlcr -isig -icanon \
         -iexten -echo -echoe -echok -echoctl -echoke noflsh \
         -ixon -crtscts";
-    std::system(ss.str());
+    std::system(ss.str().c_str());
     input_ = std::make_shared<std::ifstream>(device);
     output_ = std::make_shared<std::ofstream>(device);
 }

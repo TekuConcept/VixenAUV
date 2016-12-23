@@ -1,12 +1,14 @@
 
-VixenAUV
+RoverAUV
 ===========
 
-VixenAUV provides a simple hardware foundation for autonomous vehicles as a JavaScript node module. Current features include: 6-axis motor control with linear and angular blended modifiers, and per-motor trim, a 9-axis IMU, and an arming feature.
+RoverAUV is a formatted version of VixenAUV which provides a simple hardware foundation for autonomous rover vehicles as a JavaScript node module. Current features include: 2-axis Brushed-DC motor control with linear and angular blended modifiers, a 9-axis IMU, and an arming feature.
 
 ### Software Requirements
 
-> - Node v0.12.x or later *(required to use the built-in C++ callback features)*.
+> - CMake v2.8.9 or later *(used to compile Drivers library)*
+> - Node v0.12.x or later *(required to use the built-in C++ callback features)*
+> - node-gyp v0.12.x or later *(required to compile JS interface)*
 > - Swig v3.0.11 with JavaScript native directive:
 ```bash
 git clone https://github.com/TekuConcept/swig
@@ -21,7 +23,7 @@ make; make install
 ### Supported Hardware
 
 > - BeagleBone Black - Debian 8.4 Jessie
-> - Arduino Due - IDE v1.6.7, SAM Cortex-M3 v1.6.7
+> - Arduino UNO - PlatformIO V3.2
 > - IMU - (BMP085, MPU6050, HMC5883L)
 
 ### Getting Started

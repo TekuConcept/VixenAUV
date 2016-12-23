@@ -5,18 +5,18 @@
 #ifndef ARDUINO_FACTORY_H
 #define ARDUINO_FACTORY_H
 
-#include "ThrusterInterface.h"
-#include "PowerInterface.h"
+#include <iostream>
+
 #include "Serial.h"
 #include "ArduinoMap.h"
-#include <iostream>
+#include "ThrusterInterface.h"
 
 class ArduinoFactory {
 public:
-	ArduinoFactory() {
+	ArduinoFactory() : arduino("/dev/ttyUSB0", BAUD) {
 		// read ready string, clearing the input buffer
 		std::cout << arduino.readString() << std::endl;
-		arduino.writeByte(1); // acknowledge
+		arduino.writeByte(ACKNO); // acknowledge
 	}
 
 	void pingArduino() {
@@ -27,11 +27,6 @@ public:
 	Drive getEngine() {
 		Drive engine(&arduino);
 		return engine;
-	}
-
-	Power getPowerGrid() {
-		Power grid(&arduino);
-		return grid;
 	}
 
 private:

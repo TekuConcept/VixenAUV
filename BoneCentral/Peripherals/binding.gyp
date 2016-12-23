@@ -5,7 +5,6 @@
         "sources": [
             "swig_VixenAUV_wrap.cxx",
             "Peripherals.Arduino/Serial.cpp",
-            "Peripherals.Arduino/PowerInterface.cpp",
             "../../Libraries/Drivers/Src/System/I2C.cpp",
             "../../Libraries/Drivers/Src/Sensors/BMP085.cpp",
             "../../Libraries/Drivers/Src/Sensors/HMC5883L.cpp",
@@ -17,7 +16,9 @@
             "../../Libraries/Drivers/Include/System",
             "../../Libraries/Drivers/Include/Registers",
             "../../Libraries/Drivers/Include/Interfaces",
-            "../../Libraries/Drivers/Include/Sensors"
+            "../../Libraries/Drivers/Include/Sensors",
+            "/usr/include/node"
+            #avoid node-gyp confusion between ./node and ./nodejs
         ],
         "cflags": [
             "-std=c++11",
