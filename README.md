@@ -43,38 +43,20 @@ var VixenAUV = require(libpath + '/VixenAUV');
 
 // Connect to the Arduino
 var factory = new VixenAUV.ArduinoFactory();
-var grid = factory.getPowerGrid();
 var engine = factory.getEngine();
 
-// Wait for the signal and go!
-var deferred_resolve = null;
-var wait = new Promise(function(resolve, reject) { deferred_resolve = resolve; });
-function callback(msg) {
-	console.log(msg);
-	deferred_resolve();
-}
-grid.waitForStartSignal(callback);
-wait.then(function() {
-	engine.dive(0.25);
-	engine.move(0.50);
-});
+engine.move(0.25);
+engine.rotate(0.50);
+engine.rotate(0);
+engine.move(0);
 ```
 
 ### List of Commands
 ####ArduinoFactory
 > - **pingArduino** - *sends a byte and the Arduino responds with a string*
 > - **getEngine** - *creates a new Drive engine for managing motors*
-> - **getPowerGrid** - *create a new Power interface for managing power power related features*
 
 ####Engine
-> - **move**, **move2**, and **dive** - *all linear modifiers*
-> - **yaw**, **yaw2**, and **pitch** - *all angular modifiers*
-> - **setForwardTrim**, **setDiveTrim**, **setStrafeTrim** - *per thruster pair trim setting*
+> - **move** - *all linear modifiers*
+> - **rotate** - *all angular modifiers*
 > - **debug** and **verbose** - *used for analyzing execution during runtime*
-
-####Power
-> - **turnOnEscs** and **turnOffEscs** - *relay powered ESC control*
-> - **turnOnHeadlights** and **turnOffHeadlights** - *relay powered lights*
-> - **getBatteryVoltage** - *reads the battery's current voltage*
-> - **waitForStartSignal** - *callback-driven hardware signal*
-> - **verbose** - *used for analyzing execution during runtime*

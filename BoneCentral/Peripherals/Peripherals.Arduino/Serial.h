@@ -9,7 +9,11 @@
 //#define DUE
 #define UNO
 
-#include <fstream>
+#include <fcntl.h>
+#include <unistd.h>
+#include <sys/ioctl.h>
+#include <termios.h>
+// #include <fstream>
 #include <memory>
 #include <cstdlib>
 #include <thread>
@@ -17,12 +21,14 @@
 #include <sstream>
 #include <string>
 #include <iostream>
+#include <iomanip>
 
 class Serial {
 private:
-    std::shared_ptr<std::ifstream> input_;
-    std::shared_ptr<std::ofstream> output_;
+    // std::shared_ptr<std::ifstream> input_;
+    // std::shared_ptr<std::ofstream> output_;
     static std::mutex serialLock_;
+    int fd;
     
 public:
     Serial(std::string device, int baud);

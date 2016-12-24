@@ -15,7 +15,7 @@ class ArduinoFactory {
 public:
 	ArduinoFactory() : arduino("/dev/ttyUSB0", BAUD) {
 		// read ready string, clearing the input buffer
-		std::cout << arduino.readString() << std::endl;
+		std::cerr << arduino.readString() << std::endl;
 		arduino.writeByte(ACKNO); // acknowledge
 	}
 
